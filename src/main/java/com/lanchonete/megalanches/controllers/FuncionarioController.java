@@ -25,7 +25,9 @@ public class FuncionarioController {
 		return ResponseEntity.ok().body(list);
 	}
 	
+	@GetMapping(value = "/{id}")
 	public ResponseEntity<Funcionario> findById(@PathVariable Long id){
+		System.out.println("ID recebido: " + id);
 		Funcionario obj = funcionarioService.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
