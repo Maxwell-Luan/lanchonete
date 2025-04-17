@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lanchonete.megalanches.entities.Funcionario;
-import com.lanchonete.megalanches.services.FuncionarioService;
+import com.lanchonete.megalanches.entities.Pedido;
+import com.lanchonete.megalanches.services.PedidoService;
 
 @RestController
-@RequestMapping(value = "/funcionarios")
-public class FuncionarioController {
-	
+@RequestMapping(value = "/pedidos")
+public class PedidoController {
+
 	@Autowired
-	private FuncionarioService service;
+	private PedidoService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Funcionario>> findAll(){
-		List<Funcionario> list = service.findAll();
+	public ResponseEntity<List<Pedido>> findAll(){
+		List<Pedido> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Funcionario> findById(@PathVariable("id") Long id){
-		Funcionario obj = service.findById(id);
+	public ResponseEntity<Pedido> findById(@PathVariable("id") Long id){
+		Pedido obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 }
