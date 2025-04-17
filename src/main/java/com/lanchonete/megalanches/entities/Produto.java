@@ -1,5 +1,6 @@
 package com.lanchonete.megalanches.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -10,23 +11,24 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tbproduto")
-public class Produto {
+public class Produto implements Serializable{
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private String descricao;
-	private double valor;
+	private double preco;
 	private String imgUrl;
 	
 	public Produto() {
 	}
 
-	public Produto(Long id, String descricao, double valor, String imgUrl) {
+	public Produto(Long id, String descricao, double preco, String imgUrl) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
-		this.valor = valor;
+		this.preco = preco;
 		this.imgUrl = imgUrl;
 	}
 
@@ -46,12 +48,12 @@ public class Produto {
 		this.descricao = descricao;
 	}
 
-	public double getValor() {
-		return valor;
+	public double getPreco() {
+		return preco;
 	}
 
-	public void setValor(double valor) {
-		this.valor = valor;
+	public void setPreco(double preco) {
+		this.preco = preco;
 	}
 
 	public String getImgUrl() {
@@ -81,7 +83,7 @@ public class Produto {
 
 	@Override
 	public String toString() {
-		return "Produto [id=" + id + ", descricao=" + descricao + ", valor=" + valor + ", imgUrl=" + imgUrl + "]";
+		return "Produto [id=" + id + ", descricao=" + descricao + ", preco=" + preco + ", imgUrl=" + imgUrl + "]";
 	}
 	
 }

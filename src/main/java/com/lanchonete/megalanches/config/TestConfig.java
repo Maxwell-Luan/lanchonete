@@ -11,9 +11,11 @@ import org.springframework.context.annotation.Profile;
 import com.lanchonete.megalanches.entities.Funcionario;
 import com.lanchonete.megalanches.entities.Pedido;
 import com.lanchonete.megalanches.entities.Produto;
+import com.lanchonete.megalanches.entities.ProdutoPedido;
 import com.lanchonete.megalanches.entities.enums.StatusPedido;
 import com.lanchonete.megalanches.repositories.FuncionarioRepository;
 import com.lanchonete.megalanches.repositories.PedidoRepository;
+import com.lanchonete.megalanches.repositories.ProdutoPedidoRepository;
 import com.lanchonete.megalanches.repositories.ProdutoRepository;
 
 @Configuration
@@ -28,6 +30,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private ProdutoPedidoRepository produtoPedidoRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -81,11 +86,20 @@ public class TestConfig implements CommandLineRunner {
 		
 		produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5));
 		
-		Pedido ped1 = new Pedido(null, StatusPedido.PAGO, 10.00, Instant.parse("2025-04-01T12:54:07Z"), func20);
-		Pedido ped2 = new Pedido(null, StatusPedido.PENDENTE, 15.00, Instant.parse("2025-04-15T18:37:09Z"), func4);
-		Pedido ped3 = new Pedido(null, StatusPedido.CANCELADO, 5.00, Instant.parse("2025-04-05T10:21:04Z"), func7);
+		Pedido ped1 = new Pedido(null, StatusPedido.PAGO, Instant.parse("2025-04-01T12:54:07Z"), func20);
+		Pedido ped2 = new Pedido(null, StatusPedido.PENDENTE, Instant.parse("2025-04-15T18:37:09Z"), func4);
+		Pedido ped3 = new Pedido(null, StatusPedido.CANCELADO, Instant.parse("2025-04-05T10:21:04Z"), func7);
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3));
+		
+		ProdutoPedido pp1 = new ProdutoPedido(ped1, prod2, 1, prod2.getPreco());
+		ProdutoPedido pp2 = new ProdutoPedido(ped1, prod1, 1, prod1.getPreco());
+		ProdutoPedido pp3 = new ProdutoPedido(ped2, prod3, 4, prod3.getPreco());
+		ProdutoPedido pp4 = new ProdutoPedido(ped3, prod1, 2, prod1.getPreco());
+		ProdutoPedido pp5 = new ProdutoPedido(ped3, prod4, 5, prod4.getPreco());
+		ProdutoPedido pp6 = new ProdutoPedido(ped3, prod5, 3, prod5.getPreco());
+		
+		produtoPedidoRepository.saveAll(Arrays.asList(pp1, pp2, pp3, pp4, pp5, pp6));
 	}
 
 }

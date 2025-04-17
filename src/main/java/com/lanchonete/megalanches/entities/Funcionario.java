@@ -1,5 +1,6 @@
 package com.lanchonete.megalanches.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -10,8 +11,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tbfuncionario")
-public class Funcionario {
-
+public class Funcionario implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;

@@ -1,5 +1,6 @@
 package com.lanchonete.megalanches.entities;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -16,13 +17,13 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tbpedido")
-public class Pedido {
+public class Pedido implements Serializable{
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	private Integer statusPedido;
-	private double valorTotal;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant data;
@@ -34,11 +35,10 @@ public class Pedido {
 	public Pedido() {
 	}
 
-	public Pedido(Long id, StatusPedido statusPedido, double valorTotal, Instant data, Funcionario funcionario) {
+	public Pedido(Long id, StatusPedido statusPedido, Instant data, Funcionario funcionario) {
 		super();
 		this.id = id;
 		setStatusPedido(statusPedido);
-		this.valorTotal = valorTotal;
 		this.data = data;
 		this.funcionario = funcionario;
 	}
@@ -59,14 +59,6 @@ public class Pedido {
 		if (statusPedido != null) {
 			this.statusPedido = statusPedido.getCodigo();
 		}
-	}
-
-	public double getValorTotal() {
-		return valorTotal;
-	}
-
-	public void setValorTotal(double valorTotal) {
-		this.valorTotal = valorTotal;
 	}
 
 	public Instant getData() {
@@ -96,7 +88,7 @@ public class Pedido {
 
 	@Override
 	public String toString() {
-		return "Pedido [id=" + id + ", statusPedido=" + statusPedido + ", valorTotal=" + valorTotal + ", data=" + data + "]";
+		return "Pedido [id=" + id + ", statusPedido=" + statusPedido + ", data=" + data + "]";
 	}
 
 }
