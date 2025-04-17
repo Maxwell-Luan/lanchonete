@@ -4,11 +4,14 @@ import java.time.Instant;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lanchonete.megalanches.entities.enums.StatusPedido;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,21 +21,26 @@ public class Pedido {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	private String descricao;
+	private Integer statusPedido;
 	private double valorTotal;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant data;
 	
+	@ManyToOne
+	@JoinColumn(name = "id_funcionario")
+	private Funcionario funcionario;
+	
 	public Pedido() {
 	}
 
-	public Pedido(Long id, String descricao, double valorTotal, Instant data) {
+	public Pedido(Long id, StatusPedido statusPedido, double valorTotal, Instant data, Funcionario funcionario) {
 		super();
 		this.id = id;
-		this.descricao = descricao;
+		setStatusPedido(statusPedido);
 		this.valorTotal = valorTotal;
 		this.data = data;
+		this.funcionario = funcionario;
 	}
 
 	public Long getId() {
@@ -43,12 +51,14 @@ public class Pedido {
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public StatusPedido getStatusPedido() {
+		return StatusPedido.valueOf(statusPedido);
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setStatusPedido(StatusPedido statusPedido) {
+		if (statusPedido != null) {
+			this.statusPedido = statusPedido.getCodigo();
+		}
 	}
 
 	public double getValorTotal() {
@@ -86,7 +96,7 @@ public class Pedido {
 
 	@Override
 	public String toString() {
-		return "Pedido [id=" + id + ", descricao=" + descricao + ", valorTotal=" + valorTotal + ", data=" + data + "]";
+		return "Pedido [id=" + id + ", statusPedido=" + statusPedido + ", valorTotal=" + valorTotal + ", data=" + data + "]";
 	}
 
 }

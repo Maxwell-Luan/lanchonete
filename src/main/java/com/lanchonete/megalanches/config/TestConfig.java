@@ -1,5 +1,6 @@
 package com.lanchonete.megalanches.config;
 
+import java.time.Instant;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.lanchonete.megalanches.entities.Funcionario;
+import com.lanchonete.megalanches.entities.Pedido;
+import com.lanchonete.megalanches.entities.Produto;
+import com.lanchonete.megalanches.entities.enums.StatusPedido;
 import com.lanchonete.megalanches.repositories.FuncionarioRepository;
+import com.lanchonete.megalanches.repositories.PedidoRepository;
+import com.lanchonete.megalanches.repositories.ProdutoRepository;
 
 @Configuration
 @Profile("test")
@@ -16,6 +22,12 @@ public class TestConfig implements CommandLineRunner {
 
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
+	
+	@Autowired
+	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -60,6 +72,20 @@ public class TestConfig implements CommandLineRunner {
 				Arrays.asList(func1, func2, func3, func4, func5, func6, func7, func8, func9, func10, func11, func12,
 						func13, func14, func15, func16, func17, func18, func19, func20, func21, func22, func23, func24,
 						func25, func26, func27, func28, func29, func30, func31, func32, func33, func34, func35));
+		
+		Produto prod1 = new Produto(null, "Coxinha", 5.50, "www.imagem/coxinha.com");
+		Produto prod2 = new Produto(null, "Pastel Assado", 5.00, "www.imagem/pastel_assado.com");
+		Produto prod3 = new Produto(null, "Quibe", 3.50, "www.imagem/quibe.com");
+		Produto prod4 = new Produto(null, "Empada", 4.50, "www.imagem/empada.com");
+		Produto prod5 = new Produto(null, "Enrolado de Salsicha", 4.00, "www.imagem/enrolado_de_salsicha.com");
+		
+		produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3, prod4, prod5));
+		
+		Pedido ped1 = new Pedido(null, StatusPedido.PAGO, 10.00, Instant.parse("2025-04-01T12:54:07Z"), func20);
+		Pedido ped2 = new Pedido(null, StatusPedido.PENDENTE, 15.00, Instant.parse("2025-04-15T18:37:09Z"), func4);
+		Pedido ped3 = new Pedido(null, StatusPedido.CANCELADO, 5.00, Instant.parse("2025-04-05T10:21:04Z"), func7);
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3));
 	}
 
 }
