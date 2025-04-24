@@ -39,7 +39,7 @@ public class FuncionarioController {
 	}
 	
 	//Retorna o código 201 de funcionário inserido
-	@PostMapping(value = "/{id}")
+	@PostMapping
 	public ResponseEntity<Funcionario> insert(@RequestBody Funcionario obj){
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();

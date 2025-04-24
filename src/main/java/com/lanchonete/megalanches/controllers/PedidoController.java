@@ -38,7 +38,7 @@ public class PedidoController {
 	}
 	
 	//Retorna o código 201 de funcionário inserido
-	@PostMapping(value = "/{id}")
+	@PostMapping
 	public ResponseEntity<Pedido> insert(@RequestBody Pedido obj){
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -46,7 +46,7 @@ public class PedidoController {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(Long id){
+	public ResponseEntity<Void> delete(@PathVariable("id") Long id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}

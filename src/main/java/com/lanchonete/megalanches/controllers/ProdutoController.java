@@ -38,7 +38,7 @@ public class ProdutoController {
 	}
 	
 	//Retorna o código 201 de funcionário inserido
-	@PostMapping(value = "/{id}")
+	@PostMapping
 	public ResponseEntity<Produto> insert(@RequestBody Produto obj){
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
