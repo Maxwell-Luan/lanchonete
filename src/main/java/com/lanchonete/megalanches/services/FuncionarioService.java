@@ -13,14 +13,34 @@ import com.lanchonete.megalanches.repositories.FuncionarioRepository;
 public class FuncionarioService {
 
 	@Autowired
-	private FuncionarioRepository funcionarioRepository;
+	private FuncionarioRepository repository;
 	
 	public List<Funcionario> findAll(){
-		return funcionarioRepository.findAll();
+		return repository.findAll();
 	}
 	
 	public Funcionario findById(Long id) {
-		Optional<Funcionario> obj = funcionarioRepository.findById(id);
+		Optional<Funcionario> obj = repository.findById(id);
 		return obj.get();
 	}
+	
+	public Funcionario insert(Funcionario obj) {
+		return repository.save(obj);
+	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
+	public Funcionario update(Long id, Funcionario obj) {
+		Funcionario func = repository.getReferenceById(id);
+		atualizarDados(func, obj);
+		return repository.save(func);
+	}
+	
+	public void atualizarDados(Funcionario func, Funcionario obj) {
+		func.setNome(obj.getNome());
+		func.setSaldo(obj.getSaldo());
+	}
+	
 }

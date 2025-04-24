@@ -13,14 +13,33 @@ import com.lanchonete.megalanches.repositories.PedidoRepository;
 public class PedidoService {
 
 	@Autowired
-	private PedidoRepository pedidoRepository;
+	private PedidoRepository repository;
 	
 	public List<Pedido> findAll(){
-		return pedidoRepository.findAll();
+		return repository.findAll();
 	}
 	
 	public Pedido findById(Long id) {
-		Optional<Pedido> obj = pedidoRepository.findById(id);
+		Optional<Pedido> obj = repository.findById(id);
 		return obj.get();
+	}
+	
+	public Pedido insert(Pedido obj) {
+		return repository.save(obj);
+	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
+	public Pedido update(Long id, Pedido obj) {
+		Pedido ped = repository.getReferenceById(id);
+		atualizarDados(ped, obj);
+		return repository.save(ped);
+	}
+	
+	public void atualizarDados(Pedido ped, Pedido obj){
+		ped.setData(obj.getData());
+		ped.setStatusPedido(obj.getStatusPedido());
 	}
 }
