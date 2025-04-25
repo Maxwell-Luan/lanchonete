@@ -37,16 +37,16 @@ public class TestConfig implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		Funcionario func1 = new Funcionario(null, "Chefão Emerson", 20.00);
-		Funcionario func2 = new Funcionario(null, "Luan Teste", -2.00);
-		Funcionario func3 = new Funcionario(null, "Felipe", 15.50);
-		Funcionario func4 = new Funcionario(null, "Magnus", 32.40);
-		Funcionario func5 = new Funcionario(null, "Adriana", 0.00);
-		Funcionario func6 = new Funcionario(null, "Adriana Rodrigues", 0.00);
-		Funcionario func7 = new Funcionario(null, "Andréia", 0.00);
-		Funcionario func8 = new Funcionario(null, "Débora", 0.00);
-		Funcionario func9 = new Funcionario(null, "Erzita", 0.00);
-		Funcionario func10 = new Funcionario(null, "Eduardo", 0.00);
+		Funcionario func1 = new Funcionario(null, "Chefão Emerson", 50.00);
+		Funcionario func2 = new Funcionario(null, "Luan Teste", 50.00);
+		Funcionario func3 = new Funcionario(null, "Felipe", 50.00);
+		Funcionario func4 = new Funcionario(null, "Magnus", 50.00);
+		Funcionario func5 = new Funcionario(null, "Adriana", 50.00);
+		Funcionario func6 = new Funcionario(null, "Adriana Rodrigues", 50.00);
+		Funcionario func7 = new Funcionario(null, "Andréia", 50.00);
+		Funcionario func8 = new Funcionario(null, "Débora", 50.00);
+		Funcionario func9 = new Funcionario(null, "Erzita", 50.00);
+		Funcionario func10 = new Funcionario(null, "Eduardo", 50.00);
 		Funcionario func11 = new Funcionario(null, "Eliza", 0.00);
 		Funcionario func12 = new Funcionario(null, "Euzi", 0.00);
 		Funcionario func13 = new Funcionario(null, "Élia", 0.00);
