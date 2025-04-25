@@ -2,7 +2,9 @@ package com.lanchonete.megalanches.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lanchonete.megalanches.entities.enums.StatusPedido;
@@ -13,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,6 +34,9 @@ public class Pedido implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "id_funcionario")
 	private Funcionario funcionario;
+	
+	@OneToMany(mappedBy = "id.pedido")
+	private Set<ProdutoPedido> itens = new HashSet<>();
 	
 	public Pedido() {
 	}
@@ -67,6 +73,18 @@ public class Pedido implements Serializable{
 
 	public void setData(Instant data) {
 		this.data = data;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public Set<ProdutoPedido> getItens() {
+		return itens;
 	}
 
 	@Override

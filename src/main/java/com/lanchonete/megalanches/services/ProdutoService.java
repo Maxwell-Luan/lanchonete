@@ -39,7 +39,7 @@ public class ProdutoService {
 	}
 	
 	public void atualizarDados(Produto prod, Produto obj) {
-		prod.setDescricao(obj.getDescricao());
+		prod.setNome(obj.getNome());
 		prod.setImgUrl(obj.getImgUrl());
 		prod.setPreco(obj.getPreco());
 	}

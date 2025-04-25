@@ -1,12 +1,17 @@
 package com.lanchonete.megalanches.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +24,10 @@ public class Funcionario implements Serializable{
 	private Long id;
 	private String nome;
 	private double saldo;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "funcionario")
+	private List<Pedido> pedidos = new ArrayList<>();
 	
 	public Funcionario() {
 	}
@@ -52,6 +61,10 @@ public class Funcionario implements Serializable{
 
 	public void setSaldo(double saldo) {
 		this.saldo = saldo;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.lanchonete.megalanches.entities.PK;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lanchonete.megalanches.entities.Pedido;
 import com.lanchonete.megalanches.entities.Produto;
 
@@ -15,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 public class ProdutoPedidoPK implements Serializable{
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "id_pedido")
 	private Pedido pedido;

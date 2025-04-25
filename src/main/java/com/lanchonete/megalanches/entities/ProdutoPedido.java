@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
 public class ProdutoPedido {
 
 	@EmbeddedId
+	@JsonIgnore
 	private ProdutoPedidoPK id = new ProdutoPedidoPK();
 	
 	private Integer quantidade;
@@ -70,6 +71,10 @@ public class ProdutoPedido {
 	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
+	
+	public Double getSubTotal() {
+        return preco * quantidade;
+    }
 
 	@Override
 	public int hashCode() {
