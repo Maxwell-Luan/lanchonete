@@ -17,19 +17,25 @@ public class FuncionarioService {
 
 	@Autowired
 	private FuncionarioRepository repository;
-	
-	public List<Funcionario> findAll(){
+
+	public List<Funcionario> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public Funcionario findById(Long id) {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 	}
-	
+
 	public Funcionario insert(Funcionario obj) {
-		return repository.save(obj);
+		try {
+			return repository.save(obj);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		} catch (NullPointerException e) {
+			throw new NullPointerException(e.getMessage());
+		}
 	}
-	
+
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
@@ -39,21 +45,21 @@ public class FuncionarioService {
 			throw new DatabaseException(e.getMessage());
 		}
 	}
-	
+
 	public Funcionario update(Long id, Funcionario obj) {
 		try {
 			Funcionario func = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 			atualizarDados(func, obj);
 			return repository.save(func);
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			throw new NullPointerException(e.getMessage());
 		}
-	
+
 	}
-	
+
 	public void atualizarDados(Funcionario func, Funcionario obj) {
 		func.setNome(obj.getNome());
 		func.setSaldo(obj.getSaldo());
 	}
-	
+
 }

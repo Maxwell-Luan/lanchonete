@@ -27,7 +27,13 @@ public class ProdutoService {
 	}
 
 	public Produto insert(Produto obj) {
-		return repository.save(obj);
+		try {
+			return repository.save(obj);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		} catch (NullPointerException e) {
+			throw new NullPointerException(e.getMessage());
+		}
 	}
 
 	public void delete(Long id) {

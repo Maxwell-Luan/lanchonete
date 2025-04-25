@@ -7,16 +7,25 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.lanchonete.megalanches.entities.Funcionario;
 import com.lanchonete.megalanches.entities.Pedido;
+import com.lanchonete.megalanches.entities.Produto;
+import com.lanchonete.megalanches.entities.ProdutoPedido;
+import com.lanchonete.megalanches.repositories.FuncionarioRepository;
 import com.lanchonete.megalanches.repositories.PedidoRepository;
 import com.lanchonete.megalanches.services.exceptions.DatabaseException;
 import com.lanchonete.megalanches.services.exceptions.ResourceNotFoundException;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PedidoService {
 
 	@Autowired
 	private PedidoRepository repository;
+	
+	@Autowired
+	private FuncionarioRepository funcRepository;
 
 	public List<Pedido> findAll() {
 		return repository.findAll();
@@ -26,8 +35,32 @@ public class PedidoService {
 		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
+	@Transactional
 	public Pedido insert(Pedido obj) {
-		return repository.save(obj);
+		Funcionario func = funcRepository.findById(obj.getFuncionario().getId()).orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado"));
+		try {
+			obj.setFuncionario(func);
+			atualizarSaldo(func, obj);
+			
+			for(ProdutoPedido pp : obj.getItens()) {
+				Produto produto = pp.getProduto();
+				if(produto.getId() == null) {
+					throw new IllegalArgumentException("O id do produto não pode ser nulo");
+				}
+				pp.setPedido(obj);
+			}
+			return repository.save(obj);
+		} catch(NullPointerException e) {
+			throw new NullPointerException(e.getMessage());
+		}
+		
+	}
+	
+	public void atualizarSaldo(Funcionario func, Pedido obj) {
+		double novoSaldo = func.getSaldo() - obj.getTotal();
+		func.setSaldo(novoSaldo);
+		funcRepository.save(func);
+		
 	}
 
 	public void delete(Long id) {
