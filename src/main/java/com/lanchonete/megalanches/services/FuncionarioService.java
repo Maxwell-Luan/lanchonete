@@ -1,13 +1,16 @@
 package com.lanchonete.megalanches.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.lanchonete.megalanches.entities.Funcionario;
 import com.lanchonete.megalanches.repositories.FuncionarioRepository;
+import com.lanchonete.megalanches.services.exceptions.DatabaseException;
+import com.lanchonete.megalanches.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class FuncionarioService {
@@ -20,8 +23,7 @@ public class FuncionarioService {
 	}
 	
 	public Funcionario findById(Long id) {
-		Optional<Funcionario> obj = repository.findById(id);
-		return obj.get();
+		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public Funcionario insert(Funcionario obj) {
@@ -29,13 +31,24 @@ public class FuncionarioService {
 	}
 	
 	public void delete(Long id) {
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
 	}
 	
 	public Funcionario update(Long id, Funcionario obj) {
-		Funcionario func = repository.getReferenceById(id);
-		atualizarDados(func, obj);
-		return repository.save(func);
+		try {
+			Funcionario func = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+			atualizarDados(func, obj);
+			return repository.save(func);
+		} catch(NullPointerException e) {
+			throw new NullPointerException(e.getMessage());
+		}
+	
 	}
 	
 	public void atualizarDados(Funcionario func, Funcionario obj) {

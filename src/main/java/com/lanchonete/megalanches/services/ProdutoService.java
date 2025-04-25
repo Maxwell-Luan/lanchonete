@@ -1,43 +1,56 @@
 package com.lanchonete.megalanches.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.lanchonete.megalanches.entities.Produto;
 import com.lanchonete.megalanches.repositories.ProdutoRepository;
+import com.lanchonete.megalanches.services.exceptions.DatabaseException;
+import com.lanchonete.megalanches.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class ProdutoService {
 
 	@Autowired
 	private ProdutoRepository repository;
-	
-	public List<Produto> findAll(){
+
+	public List<Produto> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public Produto findById(Long id) {
-		Optional<Produto> obj = repository.findById(id);
-		return obj.get();
+		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 	}
-	
+
 	public Produto insert(Produto obj) {
 		return repository.save(obj);
 	}
-	
+
 	public void delete(Long id) {
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
 	}
-	
+
 	public Produto update(Long id, Produto obj) {
-		Produto prod = repository.getReferenceById(id);
-		atualizarDados(prod, obj);
-		return repository.save(prod);
+		try {
+			Produto prod = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+			atualizarDados(prod, obj);
+			return repository.save(prod);
+		} catch (NullPointerException e) {
+			throw new NullPointerException(e.getMessage());
+		}
+
 	}
-	
+
 	public void atualizarDados(Produto prod, Produto obj) {
 		prod.setNome(obj.getNome());
 		prod.setImgUrl(obj.getImgUrl());

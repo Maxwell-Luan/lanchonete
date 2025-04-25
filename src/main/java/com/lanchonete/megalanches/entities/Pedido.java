@@ -9,6 +9,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lanchonete.megalanches.entities.enums.StatusPedido;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,24 +21,24 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tbpedido")
-public class Pedido implements Serializable{
+public class Pedido implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Integer statusPedido;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant data;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_funcionario")
 	private Funcionario funcionario;
-	
-	@OneToMany(mappedBy = "id.pedido")
+
+	@OneToMany(mappedBy = "id.pedido", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ProdutoPedido> itens = new HashSet<>();
-	
+
 	public Pedido() {
 	}
 
@@ -72,7 +73,9 @@ public class Pedido implements Serializable{
 	}
 
 	public void setData(Instant data) {
-		this.data = data;
+		if (data != null) {
+			this.data = data;
+		}
 	}
 
 	public Funcionario getFuncionario() {
@@ -86,10 +89,10 @@ public class Pedido implements Serializable{
 	public Set<ProdutoPedido> getItens() {
 		return itens;
 	}
-	
+
 	public Double getTotal() {
 		double total = 0.00;
-		for(ProdutoPedido pp : itens) {
+		for (ProdutoPedido pp : itens) {
 			total += pp.getSubTotal();
 		}
 		return total;
