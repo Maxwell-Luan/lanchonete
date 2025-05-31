@@ -1,33 +1,47 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# ---------------------------
+# Ignore arquivos do sistema
+# ---------------------------
+.DS_Store
+Thumbs.db
+*.log
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# ---------------------------
+# Backend (Java/Maven)
+# ---------------------------
+/backend/target/
+/backend/.mvn/
+/backend/mvnw
+/backend/mvnw.cmd
+/backend/.idea/
+/backend/.classpath
+/backend/.project
+/backend/.settings/
+/backend/.factorypath
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+# Arquivos de build e dependências do Maven
+/backend/.mvn/wrapper/maven-wrapper.jar
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Arquivos temporários do Java
+/backend/**/*.class
 
-### VS Code ###
+# ---------------------------
+# Frontend (Node/React)
+# ---------------------------
+/frontend/node_modules/
+/frontend/build/
+/frontend/dist/
+/frontend/.env
+/frontend/.cache/
+/frontend/.pnp*
+/frontend/.parcel-cache/
+/frontend/yarn-error.log
+/frontend/.eslintcache
+
+# ---------------------------
+# Outros
+# ---------------------------
+# Arquivos temporários do VSCode
 .vscode/
+
+# Arquivos de lock do sistema operacional Windows
+ehthumbs.db
